@@ -1,12 +1,15 @@
 <?php
+namespace app\components;
 
-/**
- * Created by PhpStorm.
- * User: evgenijampleev
- * Date: 11.12.16
- * Time: 23:12
- */
-class MyComponent
-{
+class MyComponent extends \yii\base\Component{
+
+    public $a;
+    public $b;
+
+    public function sum(){
+
+        return $this->a + $this->b;
+
+    }
 
 }

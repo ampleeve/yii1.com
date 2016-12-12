@@ -7,6 +7,11 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [
+        'test' => [
+            'class' => '\app\components\MyComponent',
+            'a' => 5,
+            'b' => 7
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'FE6WIOM3MA8fYQAs0Em6D9sj1jRy_dsN',

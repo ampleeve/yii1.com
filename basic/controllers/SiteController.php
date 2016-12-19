@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\RegistrationForm;
 use app\models\TestModel;
 use Yii;
 use yii\filters\AccessControl;
@@ -56,35 +57,27 @@ class SiteController extends Controller
 
     public function actionTest(){
 
-        $model = new LoginForm([
+        //Пример 1
+        //Получение доступа к атрибуту как к обычному свойству объекта
+        //$model = new \app\models\ContactForm;
+        //$model->name = 'example';
+        //echo $model->name;
 
-            'scenario' => LoginForm::SCENARIO_LOGIN,
+        //Пример 2
+        //Также возможно получить доступ к атрибутам как к элементам массива,
+        //спасибо поддержке ArrayAccess и ArrayIterator в y ii\base\Model:
+        //$model = new \app\models\ContactForm;
+        //$model['name'] = 'example';
+        //$model['body'] = 'текст в боди';
 
-        ]);
+        //foreach ($model as $name => $value){
 
-        $model = new TestModel();
-        $model->title = 'YII2';
-        $model->content = 'Контент';
-        $model->description = 'описание';
+          //  echo "$name: $value<br>";
 
-        $model->load([
+        //Пример 3
+        $model = new \app\models\ContactForm();
+        echo $model->getAttributeLabel('email');
 
-            'title' => 'YII2',
-            'content' => 'Контент',
-            'description' => 'описание',
-
-        ],'');
-        echo '<pre>';
-        var_dump($model);
-        echo '</pre>';
-        //$this->layout = false;
-        //return $this->render('test', [
-
-          //  'title' => 'YII',
-           // 'content' => 'Lesson number two..'
-
-        //]);
-        //echo "actionTest has called..";
 
     }
 
@@ -101,25 +94,6 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    /**
-     * Login action.
-     *
-     * @return string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
 
     /**
      * Logout action.
@@ -143,7 +117,6 @@ class SiteController extends Controller
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
-
             return $this->refresh();
         }
         return $this->render('contact', [

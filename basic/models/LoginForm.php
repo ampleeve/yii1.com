@@ -13,14 +13,24 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
-    public $username;
+    public $email;
     public $password;
+    public $passwordRepeat;
     public $rememberMe = true;
 
     private $_user = false;
 
     const SCENARIO_LOGIN = 'login';
-    const SCENARIO_REGISTRATION = 'registration';
+    const SCENARIO_REGISTER = 'register';
+
+    public function scenarios(){
+
+        $scenarios = parent::scenarios();
+        $scenarios[self::SCENARIO_LOGIN] = ['email', 'password'];
+        $scenarios[self::SCENARIO_REGISTER] = ['email', 'password', 'passwordRepeat'];
+        return $scenarios;
+
+    }
 
 
     /**
@@ -29,9 +39,22 @@ class LoginForm extends Model
     public function rules()
     {
         return [
-            [['username', 'password'], 'required', 'on' => self::SCENARIO_LOGIN],
-            ['rememberMe', 'boolean', 'on' => self::SCENARIO_LOGIN],
-            ['password', 'validatePassword'],
+            [['email', 'password'], 'required', 'on' => self::SCENARIO_LOGIN],
+            [['rememberMe'], 'boolean', 'on' => self::SCENARIO_LOGIN],
+            [['password','passwordRepeat'], 'validatePassword', 'on' => self::SCENARIO_LOGIN],
+            [['email', 'password', 'passwordRepeat'], 'required', 'on' => self::SCENARIO_REGISTER],
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+
+            'email' => 'Электронный адрес:',
+            'password' => 'Пароль:',
+            'passwordRepeat' => 'Повторите пароль:',
+            'rememberMe' => 'Запомнить меня на этом устройстве'
+
         ];
     }
 
@@ -48,13 +71,13 @@ class LoginForm extends Model
             $user = $this->getUser();
 
             if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+                $this->addError($attribute, 'Неверные email или пароль.');
             }
         }
     }
 
     /**
-     * Logs in a user using the provided username and password.
+     * Logs in a user using the provided email and password.
      * @return bool whether the user is logged in successfully
      */
     public function login()
@@ -66,14 +89,14 @@ class LoginForm extends Model
     }
 
     /**
-     * Finds user by [[username]]
+     * Finds user by [[email]]
      *
      * @return User|null
      */
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
+            $this->_user = User::findByUsername($this->email);
         }
 
         return $this->_user;

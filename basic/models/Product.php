@@ -44,4 +44,25 @@ class Product extends \yii\db\ActiveRecord
             'price' => 'Price',
         ];
     }
+
+    public function getCustomers(){
+
+        $ordersAll = $this->hasMany(
+
+            Orders::className(),['productID' => 'id']
+
+        );
+
+        $customers = [];
+
+        foreach ($ordersAll->all() as $order){
+
+            $customers[] = $order->customerID;
+
+        }
+
+        $customers = array_unique($customers);
+        return $customers;
+
+    }
 }

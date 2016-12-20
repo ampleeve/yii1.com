@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
+use app\models\Product;
 use app\models\RegistrationForm;
 use app\models\TestModel;
 use Yii;
+use yii\db\Query;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -57,30 +59,11 @@ class SiteController extends Controller
 
     public function actionTest(){
 
-        //Пример 1
-        //Получение доступа к атрибуту как к обычному свойству объекта
-        //$model = new \app\models\ContactForm;
-        //$model->name = 'example';
-        //echo $model->name;
-
-        //Пример 2
-        //Также возможно получить доступ к атрибутам как к элементам массива,
-        //спасибо поддержке ArrayAccess и ArrayIterator в y ii\base\Model:
-        //$model = new \app\models\ContactForm;
-        //$model['name'] = 'example';
-        //$model['body'] = 'текст в боди';
-
-        //foreach ($model as $name => $value){
-
-          //  echo "$name: $value<br>";
-
-        //Пример 3
-        $model = new \app\models\ContactForm();
-        echo $model->getAttributeLabel('email');
-
+        $product = Product::findOne(17);
+        echo '<pre>';
+        var_dump($product->customers);
 
     }
-
     /**
      * Displays homepage.
      *
@@ -93,6 +76,7 @@ class SiteController extends Controller
 
         return $this->render('index');
     }
+
 
 
     /**

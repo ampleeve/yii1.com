@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php ActiveForm::end(); ?>
 
     <div class="col-lg-offset-1" style="color:#999;">
-        You may login with <strong>admin/admin</strong> or <strong>demo/demo</strong>.<br>
-        To modify the email/password, please check out the code <code>app\models\User::$users</code>.
+        Вы можете авторизоваться с  <strong>admin@admin.com/admin</strong> или <strong>demo@demo.com/demo</strong>.<br>
+        Чтобы изменить логи и пароль, пожалуйста, обратите внимание на код <code>app\models\User::$users</code>.
     </div>
 </div>
